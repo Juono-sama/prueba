@@ -28,25 +28,25 @@ public class Calculadora extends Stage {
             "9", "6", "3", "+",
             "/", "x", "-", "="};
 
-
     int num1=0, num2=0, numR=0;
 
 
 
     public Calculadora() {
         CrearUI();
-        //escena = new Scene(new Button("X"), 200, 200);
         escena = new Scene(vBox, 200, 200);
         this.setTitle("Calculadora");
         this.setScene(escena);
         this.show();
     }
 
+    //Generará la expresion tomando en cuenta varias cosas antes de hacerlo.
     private void generarExpresion(String simbolo) {
         String expresionAnterior=txtResultado.getText();
         int l=expresionAnterior.length();
         String ultimoDigito=expresionAnterior.substring(l-1);
 
+        // Borra todo lo que tenga adentro si dice Sintax Error o un 0 a menos que despues del 0 se ponga un signo
         if(expresionAnterior.equals("Sintax Error")){
             limpiar();}
         if(expresionAnterior.equals("0")) {
@@ -56,6 +56,7 @@ public class Calculadora extends Stage {
             }
         }
 
+        //En caso de que se ponga un signo después de otro, lo borra para evitar errores.
         String nuevoTexto="";
         if(simbolo.equals("+") || simbolo.equals("x")||simbolo.equals("/")){
             if(ultimoDigito.equals("+") || ultimoDigito.equals("-") || ultimoDigito.equals("x") || ultimoDigito.equals("/")){
@@ -74,11 +75,11 @@ public class Calculadora extends Stage {
             }
         }
 
-
-
+        //Al revisar todo lo anterior, escribe el simbolo
         txtResultado.appendText(simbolo);
     }
 
+    //Crea la interfaz gráfica
     private void CrearUI() {
         int c = 0;
         gridTeclado = new GridPane();
@@ -86,42 +87,35 @@ public class Calculadora extends Stage {
         txtResultado = new TextField("0");
         txtResultado.setAlignment(Pos.BASELINE_RIGHT);
         txtResultado.setEditable(false);
+
+        //Asigna los botones
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
 
                 arTeclas[i][j] = new Button(arDigitos[c]);
                 arTeclas[i][j].setPrefSize(50, 50);
                 int finalC1 = c;
-                if (i == 3 && j == 3) {
+                if (i == 3 && j == 3) { //Le da funcion al signo igual para evaluar la expresion
                 arTeclas[i][j].setOnAction( (event)->validarExpresion() );
                 }
                 else{
-                    arTeclas[i][j].setOnAction(
+                    arTeclas[i][j].setOnAction( //Le da la funcion a todas las demas teclas
                             (event) -> generarExpresion(arDigitos[finalC1]));}
-                if(c==7){}
-                gridTeclado.add(arTeclas[i][j], i, j);
+                gridTeclado.add(arTeclas[i][j], i, j); //Añade los simbolos a las teclas
                 c++;
             }
         }
 
-        vBox = new VBox(txtResultado, gridTeclado);
+        vBox = new VBox(txtResultado, gridTeclado); //Muestra el teclado
     }
 
-    private void igual(){
-        boolean validado=true;
-        validado = validarExpresion();
-        //Si si está validad, calcule
-        if(validado){
-            calcular();
-        }
-
-    }
-
+    //Valida la expresion escrita, se activa al presionar la tecla =
     private boolean validarExpresion() {
         boolean validacion=true;
         String expresion = txtResultado.getText();
         int longitud = expresion.length();
 
+        //Sintax error en caso de que el primer simbolo sea un signo
         char primerSimbolo = expresion.charAt(0);
         switch(primerSimbolo) {
             case '+','-','x','/':
@@ -133,6 +127,7 @@ public class Calculadora extends Stage {
 
         }
 
+        //Sintax error en caso de que el ultimo simbolo es un signo.
         char ultimoSimbolo = expresion.charAt(longitud-1);
         switch(ultimoSimbolo) {
             case '+','-','x','/':
@@ -150,6 +145,7 @@ public class Calculadora extends Stage {
 
     }
 
+    //Borra lo que haya en la expresion. Se usa en caso de teclear algo despues de "Sintax Error" o que la expresion sea un 0
     private void limpiar(){
         String expresion = txtResultado.getText();
         switch(expresion){
