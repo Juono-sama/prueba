@@ -1,0 +1,27 @@
+.root{
+    -fx-background-image: url("https://4.bp.blogspot.com/-p5lBYgKMwRQ/VGK9CBEz3QI/AAAAAAAALgA/Pi2twzk5ZlA/s1600/602464-live_love.jpg"), url("https://sgiauthtest.azurewebsites.net/img/Tecnologico_Nacional_de_Mexico.png");
+    -fx-background-repeat: no-repeat, no-repeat;
+    -fx-background-size: 100%, 400px;
+    -fx-background-position: center, left top;
+}
+
+.menu-bar{
+    -fx-background-color: #BCC8A3;
+    -fx-border-color: #000;
+    -fx-border-width: 2;
+}
+
+.menu:hover{
+    -fx-background: #000;
+    -fx-font-weight: bold;
+}
+
+.label:hover{
+    -fx-font-size: 12 pt;
+    -fx-text-fill: green;
+}
+
+.menu-item{
+    -fx-background-color: #4E9A18;
+    -fx-border-color: #000;
+}
