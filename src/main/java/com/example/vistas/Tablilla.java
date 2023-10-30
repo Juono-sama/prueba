@@ -54,6 +54,7 @@ public class Tablilla {
         }
     }
 
+    //Guarda la carta que se esté mostrando, es decir, actualiza la carta con la que los botones deben comparar
     public void actuCarta(Carta cartaMostrada){ //Actualiza la carta mostrada cada que cambie
         this.cartaMostrada = cartaMostrada;
     }

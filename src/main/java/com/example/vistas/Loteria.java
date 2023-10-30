@@ -125,26 +125,26 @@ public class Loteria extends Stage {
     }
 
     private void crearTablillas(){ //Crea las tablilas poniendoles cartas y las tablillas que les siguen y precenden
-        tablillas = new Tablilla[4];
+        tablillas = new Tablilla[5];
         int i=0;
 
-        while(i<4){
+        while(i<5){
             tablillas[i] = new Tablilla();
             tablillas[i].crearTablilla(cartas); //Le dá a las tablillas las cartas para que se las pongan (la tablilla agarra cartas aleatorias dentro de su método)
             i++;
         }
         i=0;
 
-        while(i<4){ //Les dice a las tablillas cual va antes y despues de ellas
+        while(i<5){ //Les dice a las tablillas cual va antes y despues de ellas
             if(i == 0){ //Esto servirá para los botones
-                tablillas[0].setTablillaAnterior(tablillas[3]);
                 tablillas[0].setTablillaSiguiente(tablillas[1]);
+                tablillas[0].setTablillaAnterior(tablillas[tablillas.length - 1]);
             }
-            else if (i == 3) {
-                tablillas[3].setTablillaSiguiente(tablillas[0]);
-                tablillas[3].setTablillaAnterior(tablillas[2]);
+            if (i == tablillas.length - 1) {
+                tablillas[tablillas.length - 1].setTablillaSiguiente(tablillas[0]);
+                tablillas[tablillas.length - 1].setTablillaAnterior(tablillas[tablillas.length - 2]);
             }
-            else{
+            if(i>0 && i<(tablillas.length - 1)){
                 tablillas[i].setTablillaSiguiente(tablillas[i+1]);
                 tablillas[i].setTablillaAnterior(tablillas[i-1]);
             }
@@ -226,7 +226,7 @@ public class Loteria extends Stage {
         btnInicio.setText("Reiniciar");
         btnInicio.setOnAction((event) -> reiniciarTodo());
         btnAnterior.setDisable(true);
-        btnAnterior.setDisable(true);
+        btnSiguiente.setDisable(true);
         actualizarCarta(); //Esto cambia la carta en el segundo 0, sino, no da la impresion de estar jugando XD
         if(s>0){ //Si vuelve a presionar el boton iniciar reinicia el tiempo:
             tiempoTarea.cancel();
@@ -254,7 +254,7 @@ public class Loteria extends Stage {
         }
         Platform.runLater(() -> escribirTiempo());
 
-        if(s%5 == 0){
+        if(s%3 == 0){
                 Platform.runLater(() -> actualizarCarta());
         }
     }
