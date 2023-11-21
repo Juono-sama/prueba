@@ -125,17 +125,20 @@ public class Loteria extends Stage {
     }
 
     private void crearTablillas(){ //Crea las tablilas poniendoles cartas y las tablillas que les siguen y precenden
-        tablillas = new Tablilla[5];
+        tablillas = new Tablilla[3];
         int i=0;
 
-        while(i<5){
+        List<Integer> numAleatorios = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+                31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53);
+        while(i<3){
             tablillas[i] = new Tablilla();
-            tablillas[i].crearTablilla(cartas); //Le dá a las tablillas las cartas para que se las pongan (la tablilla agarra cartas aleatorias dentro de su método)
+            tablillas[i].crearTablilla(cartas, numAleatorios); //Le dá a las tablillas las cartas para que se las pongan (la tablilla agarra cartas aleatorias dentro de su método)
             i++;
         }
         i=0;
 
-        while(i<5){ //Les dice a las tablillas cual va antes y despues de ellas
+        while(i<3){ //Les dice a las tablillas cual va antes y despues de ellas
             if(i == 0){ //Esto servirá para los botones
                 tablillas[0].setTablillaSiguiente(tablillas[1]);
                 tablillas[0].setTablillaAnterior(tablillas[tablillas.length - 1]);
@@ -214,8 +217,8 @@ public class Loteria extends Stage {
 
         cartaActual = cartaActual.getCartaSiguiente(); //Prepara para la siguiente carta
 
-        contadorIgual = tablillaActual.getContadorIgual(); //Actualiza las cartas que el jugador seleccionó bien en la tablilla
-        if(cartaActual == cartas[0]){ //Si se acaban las cartas y no terminó la tablilla, pierde JKAJSJKALJDASKLDJSADJS
+        //contadorIgual = tablillaActual.getContadorIgual(); //Actualiza las cartas que el jugador seleccionó bien en la tablilla
+        if(cartaActual == cartas[0] && contadorIgual < 16){ //Si se acaban las cartas y no terminó la tablilla, pierde JKAJSJKALJDASKLDJSADJS
             reiniciarTodo();
             JOptionPane.showMessageDialog(null,"Ya pasaron todas las cartas, \nNi modo, perdiste XD", "The Looser XDXD", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -254,6 +257,9 @@ public class Loteria extends Stage {
         }
         Platform.runLater(() -> escribirTiempo());
 
+        if(contadorIgual <16){
+            contadorIgual = tablillaActual.getContadorIgual();
+        }
         if(s%3 == 0){
                 Platform.runLater(() -> actualizarCarta());
         }
@@ -262,10 +268,14 @@ public class Loteria extends Stage {
         cronometro = (m<=9?"0":"") +m+ ":"+ (s<=9?"0":"") +s;
         lblCronometro.setText(cronometro);
 
-        if(contadorIgual == 16){ //Comprueba cada segundo si ganaste, sino ps no hace nada
+        if(contadorIgual == 16) { //Comprueba cada segundo si ganaste, sino ps no hace nada
+            contadorIgual = 0; reiniciarTodo();
+            JOptionPane.showMessageDialog(null, "Le diste a 16, \nGanaste ^w^", "The Winner uwu", JOptionPane.INFORMATION_MESSAGE);
+        }
+        /*if(contadorIgual == 16){ //Comprueba cada segundo si ganaste, sino ps no hace nada
             contadorIgual = 0; reiniciarTodo();
             JOptionPane.showMessageDialog(null,"Le diste a 16, \nGanaste ^w^", "The Winner uwu", JOptionPane.INFORMATION_MESSAGE);
-        }
+        }*/
     }
     private void reiniciarTodo(){ //Pone por los valores predeterminados para cuando le de en reiniciar
         s=0; m=0;
@@ -275,7 +285,8 @@ public class Loteria extends Stage {
         tiempo.cancel();
 
         cartaMostrada = cartas[0];
-        lblImagenCarta.setGraphic(cartaMostrada.getImvCarta());
+        cartaActual = cartas[0];
+        lblImagenCarta.setGraphic(cartaActual.getImvCarta());
         barajearCartasDelMazo();
 
         btnInicio.setText("Iniciar");
@@ -283,8 +294,9 @@ public class Loteria extends Stage {
 
         tablillaActual.habilitarBotones();
         contadorIgual=0;
+        tablillaActual.setContadorIgual(0);
 
         btnAnterior.setDisable(false);
-        btnAnterior.setDisable(false);
+        btnSiguiente.setDisable(false);
     }
 }

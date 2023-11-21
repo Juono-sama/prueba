@@ -17,39 +17,38 @@ public class Tablilla {
     private Carta cartaMostrada;
     private Tablilla tablillaAnterior, tablillaSiguiente;
     public Tablilla(){}
-    private Button[][] argBtnTablilla = new Button[4][4];
+    private final Button[][] argBtnTablilla = new Button[4][4];
     int contadorIgual=0;
     //Fin de atributos
 
-    public void crearTablilla(Carta[] carta) { //Crea la tablilla con cartas en orden aleatorio
+    public void crearTablilla(Carta[] carta, List<Integer> numAleatorio) { //Crea la tablilla con cartas en orden aleatorio
         gridTablilla = new GridPane();
-        List<Integer> numAleatorio = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-                31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53);
         Collections.shuffle(numAleatorio);
 
-        Carta cartaAuxiliar; //Aqui le asigna cartas a los botones del gridPane de la tablilla
-        int posImagen=1;
+        Carta[] cartaAuxiliar = new Carta[16];
+        //Carta cartaAuxiliar; //Aqui le asigna cartas a los botones del gridPane de la tablilla
+        int posImagen=1, posCartaALlenar=0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 //Crea una carta auxiliar para usar después
-                cartaAuxiliar = new Carta();
-                cartaAuxiliar.insertarImagen(carta[numAleatorio.get(posImagen-1)].getUrlImagenCarta());
-                cartaAuxiliar.getImvCarta().setFitHeight(140);
-                cartaAuxiliar.getImvCarta().setFitWidth(100);
+                cartaAuxiliar[posCartaALlenar] = new Carta();
+                String url = new String(carta[numAleatorio.get(posImagen-1)].getUrlImagenCarta());
+                cartaAuxiliar[posCartaALlenar].insertarImagen(url);
+                cartaAuxiliar[posCartaALlenar].getImvCarta().setFitHeight(140);
+                cartaAuxiliar[posCartaALlenar].getImvCarta().setFitWidth(100);
 
                 // Le asigna la carta creada para poner la en el boton
                 argBtnTablilla[i][j] = new Button();
                 argBtnTablilla[i][j].setPrefSize(90, 130);
-                argBtnTablilla[i][j].setGraphic(cartaAuxiliar.getImvCarta());
-                Carta finalCartaAuxiliar = cartaAuxiliar;
+                argBtnTablilla[i][j].setGraphic(cartaAuxiliar[posCartaALlenar].getImvCarta());
+                Carta finalCartaAuxiliar = cartaAuxiliar[posCartaALlenar];
                 int finalJ = j;
                 int finalI = i;
 
                 //Le pone la accion de comparar con la carta que se esté mostrando en caso de presionarla
                 argBtnTablilla[i][j].setOnAction((event) -> comparar(finalCartaAuxiliar, cartaMostrada, argBtnTablilla[finalI][finalJ]));
                 gridTablilla.add(argBtnTablilla[i][j],i,j);
-                posImagen++;
+                posImagen++; posCartaALlenar++;
             }
         }
     }
