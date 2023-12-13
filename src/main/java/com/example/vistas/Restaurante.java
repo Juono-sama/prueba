@@ -32,7 +32,7 @@ public class Restaurante extends Stage {
     private Carrito carrito;
     //public List<Categorias> categoriasList;
 
-    public Restaurante() throws FileNotFoundException {
+    /* public Restaurante() throws FileNotFoundException {
         crearUI();
         Panel panel = new Panel("This is the title");
         panel.getStyleClass().add("panel-primary");                            //(2)
@@ -44,23 +44,16 @@ public class Restaurante extends Stage {
         content.setCenter(vBox);
         panel.setBody(content);
 
-        /*Scene scene = new Scene(panel);
+        Scene scene = new Scene(panel);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());       //(3)
 
         this.setTitle("BootstrapFX");
         this.setScene(scene);
         this.sizeToScene();
-        this.show();*/
-
-        //Parte que yo hice
-        escena = new Scene (hPrincipal, 1500, 790);
-        this.setTitle("Restaurante");
-        this.setScene(escena);
         this.show();
+       }*/
 
-    }
-
-    private void crearUI() throws FileNotFoundException {
+    /* CrearUI(){
         categoriasDAO = new CategoriasDAO();
         tbvCategorias = new TableView<CategoriasDAO>();
         //CrearTable();
@@ -69,29 +62,40 @@ public class Restaurante extends Stage {
         btnAgregar.getStyleClass().setAll("btn","btn-danger");
         btnAgregar.setOnAction((event) -> new CategoriaForm(tbvCategorias, null));
         vBox = new VBox(tbvCategorias, btnAgregar);
+        }*/
 
+    public Restaurante() throws FileNotFoundException {
+        //Crea la interfaz y la muestra
+        crearUI();
+        escena = new Scene (hPrincipal, 1500, 790);
+        this.setTitle("Restaurante");
+        this.setScene(escena);
+        this.show();
+    }
+
+    private void crearUI() throws FileNotFoundException {
         //Parte que yo hice
-        crearTablas();
-        unirTablasYLabels();
+        crearTablas(); //Crea las tablas para ir haciendo operaciones con ellas
+        unirTablasYLabels(); //Crea los apuntadores que tendrán las tablas para que puedan hacer operaciones entre ellas
 
-        vTabla = tablaActual.getvBox();
+        vTabla = tablaActual.getvBox(); //Aqui va la tabla de categorias y productos
         vTabla.setSpacing(10);
 
-        vCarrito = new VBox(lblAnuncioCarrito, lblTablaCarrito);
-        vCliente = formularioCliente.getvBoxFormulario(); //Aqui pondré el formulario del cliente, el boton de comprar y reiniciar compra
+        vCarrito = new VBox(lblAnuncioCarrito, lblTablaCarrito); //Aqui va el carrito en la parte de abajo
+        vCliente = formularioCliente.getvBoxFormulario(); //Aqui pondré el formulario del cliente, el boton de comprar
 
-        hCarritoYCliente = new HBox(vCarrito, vCliente);
+        hCarritoYCliente = new HBox(vCarrito, vCliente); //Aqui uní las tablas de carrito y el boton comprar.
         hCarritoYCliente.setSpacing(10);
 
-        vTablaCarritoCliente = new VBox(vTabla, hCarritoYCliente);
+        vTablaCarritoCliente = new VBox(vTabla, hCarritoYCliente); //Puse las tablas de categorias y productos arriba, y el carrito abajo
         vTablaCarritoCliente.setSpacing(10);
 
-        hPrincipal = new HBox(vTablaCarritoCliente);
+        hPrincipal = new HBox(vTablaCarritoCliente); //Meto todo al HBox principal del constructor de arriba que dice Restaurante()
         hPrincipal.setPadding(new Insets(10));
     }
 
     public void crearTablas() {
-        //Crea las tablas que usaré (la actual, la de productos y la de categorias)
+        //Crea las tablas que usará el programa mientras se esté ejecutando
         tablaActual = new TablaActual();
         tablaProductos = new TablaProductos();
         tablaCategorias = new TablaCategorias();
@@ -105,8 +109,8 @@ public class Restaurante extends Stage {
         tablaActual.setTablaCategorias(tablaCategorias);
         tablaActual.setTablaCarrito(tablaCarrito);
         tablaActual.setFormularioCliente(formularioCliente);
-        //tablaActual.setFormularioCliente(formularioCliente);
 
+        //Une las tablas entre sí para que puedan hacer operaciones entre ellas
         tablaProductos.setTablaActual(tablaActual);
         tablaProductos.setFormularioCliente(formularioCliente);
         tablaCategorias.setTablaActual(tablaActual);
@@ -115,18 +119,17 @@ public class Restaurante extends Stage {
         formularioCliente.setTablaCarrito(tablaCarrito);
         formularioCliente.setTablaActual(tablaActual);
 
-
-        //Le dice al lblTablaActual que dependerá de lo que pase en en labelTablaActual del objeto tablaActual, así lo que haga en esa clase cambiaré aquí
+        /*Le dice al lblTablaActual que dependerá de lo que pase en en labelTablaActual del objeto tablaActual,
+        así lo que haga en esa clase cambiaré aquí*/
         lblTablaActual = tablaActual.getLabelTablaActual();
         tablaActual.generarTablaCategoriasInicial();
         tablaActual.cambiarATablaDeCategorias();
 
-        //Le dice al lblTablaCarrito que dependerá de lo que pase en en labelTablaCarrito del objeto tablaCarrito, así lo que haga en esa clase cambiaré aquí
+        /*Le dice al lblTablaCarrito que dependerá de lo que pase en en labelTablaCarrito del objeto tablaCarrito,
+        así lo que haga en esa clase cambiaré aquí*/
         lblTablaCarrito = tablaCarrito.getLabelTablaCarrito();
         tablaCarrito.generarTablaCarritoInicial();
         lblAnuncioCarrito = new Label("Carrito:"); lblAnuncioCarrito.setFont(new Font("Arial", 16));
-
-
     }
 
     private void CrearTable() throws FileNotFoundException {

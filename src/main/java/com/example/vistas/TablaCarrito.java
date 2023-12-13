@@ -25,7 +25,7 @@ public class TablaCarrito {
         carrito = new Carrito();
     }
 
-    public void reiniciarTablaCarrito() throws FileNotFoundException {
+    public void reiniciarTablaCarrito() throws FileNotFoundException { //Se usa cuando compras los productos del carrito
         if (listaProductos != null) {
             carrito.getListaProductos().clear();
             gridTablaCarrito = new GridPane();
@@ -34,17 +34,22 @@ public class TablaCarrito {
         }
     }
 
+    //Cuando la imagen de un producto sea seleccionada, se añade el producto al carrito y se actualiza la tabla del carrito mostrada
     public void actualizarTablaCarrito() throws FileNotFoundException {
+        //Obetenemos toda la lista de todos los productos que haya en el carrito
         listaProductos = carrito.getListaProductos();
 
+        //Variables auxiliares para crear los botones
         int numProductos, idAux, idCatAux, ancho=160, alto=120;
         String nombreAux;
         float precioAux;
         ImageView imagenAux;
 
+        //Crea el arreglo de botones para poner los productos del carrito
         numProductos = listaProductos.size();
         argBtnTabla = new Button[numProductos+1][3];
 
+        //Crea los botones iniciales (que solo son para hacer intuitiva la tabla)
         argBtnTabla[0][0] = new Button("Nombre");
         argBtnTabla[0][0].setPrefSize(ancho-60, alto-30);
         argBtnTabla[0][0].setFont(new Font("Arial", 20));
@@ -54,26 +59,30 @@ public class TablaCarrito {
         argBtnTabla[0][2] = new Button("Imagen \n(Seleccione \npara \neliminar \ndel carrito)");
         argBtnTabla[0][2].setPrefSize(ancho-60,alto+60);
         argBtnTabla[0][2].setFont(new Font("Arial", 14));
-        gridTablaCarrito.add(argBtnTabla[0][0],0,0);
+        gridTablaCarrito.add(argBtnTabla[0][0],0,0); //Los añade los botones a la cuadricula
         gridTablaCarrito.add(argBtnTabla[0][1],0,1);
         gridTablaCarrito.add(argBtnTabla[0][2],0,2);
 
+        //Crea los botones para cada producto que deba tener el carrito
         for(int i=1; i<numProductos+1; i++) {
             idAux = listaProductos.get(i - 1).getIdProducto();
             nombreAux = listaProductos.get(i - 1).getNombre();
             precioAux = listaProductos.get(i - 1).getPrecio();
             idCatAux = listaProductos.get(i - 1).getIdCategoria();
 
+            //Boton del nombre del producto
             argBtnTabla[i][0] = new Button(nombreAux);
             argBtnTabla[i][0].setPrefSize(ancho, alto - 30);
             argBtnTabla[i][0].setFont(new Font("Arial", 16));
             gridTablaCarrito.add(argBtnTabla[i][0], i, 0);
 
+            //Boton del precio del producto
             argBtnTabla[i][1] = new Button("" + precioAux);
             argBtnTabla[i][1].setPrefSize(ancho, alto - 30);
             argBtnTabla[i][1].setFont(new Font("Arial", 16));
             gridTablaCarrito.add(argBtnTabla[i][1], i, 1);
 
+            //Boton de la imagen del producto, al presionarlo, se cancela la compra del producto seleccionado.
             argBtnTabla[i][2] = new Button();
             argBtnTabla[i][2].setPrefSize(ancho, alto + 60);
             imagenAux = new ImageView(new Image(new FileInputStream("src/main/java/com/example/img/r/" + nombreAux + ".jpg")));
@@ -81,35 +90,28 @@ public class TablaCarrito {
             imagenAux.setFitWidth(ancho - 20);
             argBtnTabla[i][2].setGraphic(imagenAux);
 
-            //Variables temporales para el boton {
-            /*int finalIdAux = idAux;
-            String finalNombreAux = nombreAux;
-            float finalPrecioAux = precioAux;
-            ImageView finalImagenAux = imagenAux;
-            int finalIdCatAux = idCatAux;*/
-            //}
-            int finalI = i;
+            int finalI = i; //Evento del boton de la imagen
             argBtnTabla[i][2].setOnAction((event) -> {
                 gridTablaCarrito = new GridPane();
-                carrito.getListaProductos().remove(finalI -1);
+                carrito.getListaProductos().remove(finalI -1);//Elimina el producto del carrito
                 try {
-                    actualizarTablaCarrito();
+                    actualizarTablaCarrito(); //Actualiza la tabla del carrito con el producto ya eliminado
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-                if(finalI <=7){
+                if(finalI <=7){ //Acomoda el boton de comprar para que no se vea que se mueve
                     double posicionActual;
                     posicionActual = formularioCliente.getvBoxFormulario().getTranslateX();
                     formularioCliente.getvBoxFormulario().setTranslateX(posicionActual+ancho);
                 }
             });
-            gridTablaCarrito.add(argBtnTabla[i][2], i, 2);
+            gridTablaCarrito.add(argBtnTabla[i][2], i, 2); //añade a la cuadricula del carrito
         }
 
-        actualizarLabel();
+        actualizarLabel(); //Actualiza el Label que tiene contenida la tabla de la cuadricula cuando ya termino de poner todos los botones
     }
 
-    public void generarTablaCarritoInicial(){
+    public void generarTablaCarritoInicial(){ //Crea la tabla del carrito que se muestra al iniciar el programa
         argBtnTabla = new Button[1][3];
         int ancho=160, alto=120;
 

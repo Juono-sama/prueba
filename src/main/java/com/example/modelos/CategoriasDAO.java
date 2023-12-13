@@ -29,6 +29,27 @@ public class CategoriasDAO {
         this.nomCategoria = nomCategoria;
     }
 
+    public List<Categoria> crearYEnviarLista(){ //Crea y envia una lista de todas las categorias de la base de datos
+        List<Categoria> lista = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM Categorias"; //instruccion
+            //statement es una instruccion para preparar y ejecutar una instruccion en sql
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query); //ejecuta la instruccion sql
+            //Llena la lista de categorias con los datos sacados de la base de datos
+            while(res.next()){
+               Categoria cat = new Categoria();
+               cat.setCategoria(res.getString("categoria"));
+               cat.setProducto(res.getString("producto"));
+               lista.add(cat);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return lista; //Manda la lista a algo externo
+    }
+
     public void insertar(){
         try{
             String query = "insert into tblCategorias"+
@@ -59,25 +80,6 @@ public class CategoriasDAO {
         catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    public List<Categoria> crearYEnviarLista(){
-        List<Categoria> lista = new ArrayList<>();
-        try{
-            String query = "SELECT * FROM Categorias";
-            Statement stmt = Conexion.conexion.createStatement();
-            ResultSet res = stmt.executeQuery(query);
-            while(res.next()){
-               Categoria cat = new Categoria();
-               cat.setCategoria(res.getString("categoria"));
-               cat.setProducto(res.getString("producto"));
-               lista.add(cat);
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return lista;
     }
 
     public ObservableList<CategoriasDAO> listarCategoria(){

@@ -10,7 +10,6 @@ public class Producto {
     int idProducto;
     String nombre;
     float precio;
-    //String urlFinalImagen;
     ImageView imagen;
     int idCategoria;
 
@@ -19,7 +18,6 @@ public class Producto {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.precio = precio;
-        //this.urlFinalImagen = urlFinalImagen;
         this.imagen = imagen;
         this.idCategoria = idCategoria;
     }
@@ -50,19 +48,6 @@ public class Producto {
     public void setPrecio(float precio) {
         this.precio = precio;
     }
-
-    /*public String getUrlFinalImagen() {
-        return urlFinalImagen;
-    }*/
-
-    /*public void setUrlFinalImagen(String urlFinalImagen){
-        this.urlFinalImagen = urlFinalImagen;
-        try {
-            generarImageView();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
 
     public ImageView getImagen() {
         return imagen;

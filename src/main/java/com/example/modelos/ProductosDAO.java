@@ -26,50 +26,20 @@ public class ProductosDAO {
         this.idCategoria = idCategoria;
     }
 
-    public void insertar(){
-        try{
-            String query = "insert into Producto"+
-                    "(nombre, precio, idCategoria) VALUES('"+this.nombre+", "+this.precio+", "+this.idCategoria+"')";
-            //statement es una instruccion para preparar y ejecutar una instruccion en sql
-            Statement smt = Conexion.conexion.createStatement();
-            smt.executeUpdate(query);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    /*public void actualizar(){
-        try {
-            String query = "UPDATE Producto SET nombre = '"+this.nombre+"' " +
-                    "WHERE idCategoria = "+this.idCategoria;
-            Statement stmt = Conexion.conexion.createStatement();
-            stmt.executeUpdate(query);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }*/
-    public void eliminar(){
-        try{
-            String query = "DELETE FROM Producto WHERE idProducto = "+this.idCategoria;
-            Statement stmt = Conexion.conexion.createStatement();
-            stmt.executeUpdate(query);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+    //Crea una lista de objetos Producto con datos sacados de la base de datos dependiendo de la categoria que le den al método
     public List<Producto> crearYEnviarListaDeProductosConCategoria(String nombreCat){
         List<Producto> lista = new ArrayList<>();
-        //nombreCat = "'"+nombreCat+"'";
-        try{
+        try{//instruccion
             String query = "SELECT * FROM Producto WHERE idCategoria IN(SELECT idCategoria FROM tblCategorias WHERE nomCategoria = '"+nombreCat+"');";
+            //statement es una instruccion para preparar y ejecutar una instruccion en sql
             Statement stmt = Conexion.conexion.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+            ResultSet res = stmt.executeQuery(query); //Ejecuta la instruccion
+            //Llena la lista de objetos Producto con datos sacados de la base de datos
             while(res.next()){
                 Producto producto = new Producto();
                 producto.setIdProducto(res.getInt("idProducto"));
                 producto.setNombre(res.getString("nombre"));
                 producto.setPrecio(res.getFloat("precio"));
-                //producto.setUrlFinalImagen(res.getString("imagen"));
                 producto.setIdCategoria(res.getInt("idCategoria"));
 
                 lista.add(producto);
@@ -102,6 +72,38 @@ public class ProductosDAO {
             e.printStackTrace();
         }
         return lista;
+    }
+
+    public void insertar(){
+        try{
+            String query = "insert into Producto"+
+                    "(nombre, precio, idCategoria) VALUES('"+this.nombre+", "+this.precio+", "+this.idCategoria+"')";
+            //statement es una instruccion para preparar y ejecutar una instruccion en sql
+            Statement smt = Conexion.conexion.createStatement();
+            smt.executeUpdate(query);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    /*public void actualizar(){
+        try {
+            String query = "UPDATE Producto SET nombre = '"+this.nombre+"' " +
+                    "WHERE idCategoria = "+this.idCategoria;
+            Statement stmt = Conexion.conexion.createStatement();
+            stmt.executeUpdate(query);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }*/
+    public void eliminar(){
+        try{
+            String query = "DELETE FROM Producto WHERE idProducto = "+this.idCategoria;
+            Statement stmt = Conexion.conexion.createStatement();
+            stmt.executeUpdate(query);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public int getIdProducto() {
         return idProducto;

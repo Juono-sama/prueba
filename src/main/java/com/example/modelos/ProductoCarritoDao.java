@@ -8,10 +8,8 @@ public class ProductoCarritoDao {
     int idProducto;
     int cantidad;
 
-    public void insertarProductoCarrito(int idCliente, int idCarrito, int idProducto, int cantidad){
-        this.idCliente = idCliente; this.idCarrito = idCarrito;
-        this.idProducto = idProducto; this.cantidad = cantidad;
-
+    //Inserta el registro a la tabla proCarrito con datos que ya tenga el objeto
+    public void insertarProductoCarrito(){
         try{
             String query = "INSERT INTO proCarrito(idCliente, idCarrito, idProducto, cantidad)" +
                     " VALUES("+this.idCliente+","+this.idCarrito+", "+this.idProducto+", "+this.cantidad+")";
@@ -23,7 +21,11 @@ public class ProductoCarritoDao {
         }
     }
 
-    public void insertarProductoCarrito(){
+    //Inserta el registro a la tabla proCarrito con datos que le mande de otra clase
+    public void insertarProductoCarrito(int idCliente, int idCarrito, int idProducto, int cantidad){
+        this.idCliente = idCliente; this.idCarrito = idCarrito;
+        this.idProducto = idProducto; this.cantidad = cantidad;
+
         try{
             String query = "INSERT INTO proCarrito(idCliente, idCarrito, idProducto, cantidad)" +
                     " VALUES("+this.idCliente+","+this.idCarrito+", "+this.idProducto+", "+this.cantidad+")";
