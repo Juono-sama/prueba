@@ -1,18 +1,17 @@
 package com.example.prueba_parcial_1;
 
-import com.example.componentes.Hilo;
 import com.example.modelos.Conexion;
 import com.example.vistas.Calculadora;
 import com.example.vistas.Loteria;
 import com.example.vistas.PistaAtletismo;
 import com.example.vistas.Restaurante;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -40,7 +39,13 @@ public class HelloApplication extends Application {
         menuParcial1.getItems().addAll(mitCalculadora,mitLoteria);
 
         mitRestaurante = new MenuItem("Restaurante");
-        mitRestaurante.setOnAction((event)-> new Restaurante());
+        mitRestaurante.setOnAction((event)-> {
+            try {
+                new Restaurante();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         mitPista = new MenuItem("Pista Atletismo");
         mitPista.setOnAction((actionEvent -> new PistaAtletismo()));

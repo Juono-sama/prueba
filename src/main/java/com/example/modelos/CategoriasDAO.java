@@ -1,10 +1,13 @@
 package com.example.modelos;
 
+import com.example.vistas.Categoria;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriasDAO {
     private int idCategoria;
@@ -57,6 +60,26 @@ public class CategoriasDAO {
             e.printStackTrace();
         }
     }
+
+    public List<Categoria> crearYEnviarLista(){
+        List<Categoria> lista = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM Categorias";
+            Statement stmt = Conexion.conexion.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while(res.next()){
+               Categoria cat = new Categoria();
+               cat.setCategoria(res.getString("categoria"));
+               cat.setProducto(res.getString("producto"));
+               lista.add(cat);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
     public ObservableList<CategoriasDAO> listarCategoria(){
         //Array le tienes que decir cuántos puede almacenar, ArryaList puede crecer indefinidamente sin decirle cuántos elementos puede tener como máximo.
         ObservableList<CategoriasDAO> listCat = FXCollections.observableArrayList();
@@ -69,6 +92,7 @@ public class CategoriasDAO {
                 objC=new CategoriasDAO();
                 objC.idCategoria = res.getInt("idCategoria");
                 objC.nomCategoria = res.getString("nomCategoria");
+
                 listCat.add(objC);
             }
         }

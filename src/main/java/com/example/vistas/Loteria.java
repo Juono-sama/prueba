@@ -285,7 +285,7 @@ public class Loteria extends Stage {
         tiempo.cancel();
 
         cartaMostrada = cartas[0];
-        cartaActual = cartas[0];
+         cartaActual = cartas[0];
         lblImagenCarta.setGraphic(cartaActual.getImvCarta());
         barajearCartasDelMazo();
 

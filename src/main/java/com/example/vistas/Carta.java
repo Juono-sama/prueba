@@ -24,6 +24,8 @@ public class Carta {
             Image imgCarta;
             imgCarta = new Image(new FileInputStream(urlImagenCarta));
             imvCarta = new ImageView(imgCarta);
+
+            //imvCarta = new ImageView(new Image(new FileInputStream(url)));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
